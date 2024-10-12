@@ -1,7 +1,11 @@
 # CNNs-RF
 ## Convolutional Neural Network
-![image](https://github.com/user-attachments/assets/e338d198-cd1a-4abb-ad14-8e518f62b254)  
+![image](https://github.com/user-attachments/assets/d707af25-ffd2-41cd-ac50-ab848509da56)
+
 
 ## Random Forest
-![image](https://github.com/user-attachments/assets/af7f90d3-e61e-46a4-8b81-7eb61752b4af)
+![image](https://github.com/user-attachments/assets/7e571901-e2ef-4058-9764-5d1bfd97f753)
+
+
+
 
