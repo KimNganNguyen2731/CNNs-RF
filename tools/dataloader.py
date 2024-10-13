@@ -19,16 +19,11 @@ def data_loader(batch_size: int = 64, resize: int = 224):
         "test": transforms.Compose([
             transforms.Resize((resize, resize)),
             transforms.ToTensor()
-        ]),
-        "validate": transforms.Compose([
-            transforms.Resize((resize,resize)),
-            transforms.ToTensor()
-        ])
-        
+        ]) 
     }
     
     # Train, test folder
-    sets = ["train", "test", "validate"]
+    sets = ["train", "test"]
     
     # Create ImageFolder 
     image_data = {x: datasets.ImageFolder(os.path.join(DATA_DIR,x), 
