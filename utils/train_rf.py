@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
+from tools.tools import get_fc_features
 from sklearn.ensemble import RandomForestClassifier
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -31,24 +32,22 @@ def train_ConvNet(convNet_model, train_loader, num_epochs: int = 10):
 
 
 def train_rf(model, train_loader, n_estimators):
-    convNet = model.eval()
-    
-    features = []
-    labels = []
-    
-    # Loop over each batch to extract features
+    convNet = model.eval()  # Set model to evaluation module
+    all_features = []
+    all_labels = []
+
+    # Loop through each batch to extract features from fully connected layer
     for inputs, targets in train_loader:
-        with torch.no_grad():
-            feature = convNet(inputs).numpy()
-            features.append(feature)
-            labels.append(targets.numpy())
-            
-    # Combine all features and labels to numpy array
-    features = np.vstack(features)
-    labels = np.concatenate(labels)
-    
+        features = get_fc_features(convNet, inputs)  # Extract features from FC
+        all_features.append(features)
+        all_labels.append(targets.numpy())
+
+    # Combine all features and label to numpy array
+    all_features = np.vstack(all_features)
+    all_labels = np.concatenate(all_labels)
+
     # Training Random Forest model
     rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
-    rf_classifier.fit(features, labels)
-    
+    rf_classifier.fit(all_features, all_labels)
+
     return rf_classifier
