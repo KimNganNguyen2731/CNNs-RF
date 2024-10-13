@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import matplotlib.pyplot as plt
 
 def get_fc_features(model, inputs):
     features = []
@@ -19,3 +20,12 @@ def get_fc_features(model, inputs):
     handle.remove()
 
     return np.vstack(features)
+
+
+def loss_curve(loss_result):
+  plt.plot(loss_result, color = 'red')
+  plt.xlabel('Step')
+  plt.ylabel('Loss')
+  plt.title('Loss Curve')
+  plt.savefig('loss_curve.png')
+  plt.show()
