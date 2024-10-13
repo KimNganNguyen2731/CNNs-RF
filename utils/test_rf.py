@@ -1,22 +1,29 @@
 import torch
 import numpy as np
+from tools.tools import get_fc_features
 
-def predict_rf(convNet_model, rf_classifier, test_loader):
-    conv_net = convNet_model.eval()  # set CNNs model to evaluation mode (evaluation)
-
+def predict_rf(model, rf_classifier, test_loader):
+    model.eval()  # Set CNN model to evaluation module
     all_predictions = []
-    true_labels = []
+    n_correct = 0
+    n_samples = 0
 
-    # loop over each batch in test_loader to extract features and predict labels
-    for inputs, targets in test_loader:
-        with torch.no_grad():
-            # Extract features with CNNs model
-            features = conv_net(inputs).numpy()
+    # Predict on each batch in test_loader
+    for inputs, true_label in test_loader:
+        # Extract features from fully connected layer
+        features = extract_fc_features(model, inputs)
 
-            # Predict with Random Forest
-            predictions = rf_classifier.predict(features)
+        # Using Random Forest model to predict
+        predictions = rf_classifier.predict(features)
 
-            all_predictions.extend(predictions)
-            true_labels.extend(targets.numpy())  # Save the real labels to compare with the predicted labels
+        # Convert prediction result to tensor to compute accuracy
+        all_predictions = torch.tensor(predictions)
 
-    return np.array(all_predictions), np.array(true_labels)
+        # Compare true and predicted labels
+        true_label = true_label.cpu().numpy()  # Convert to numpy array 
+        n_correct += (all_predictions == true_label).sum().item()
+
+        n_samples += true_label.shape[0]
+
+    accuracy = 100 * n_correct / n_samples
+    print(f'Accuracy = {accuracy:.2f}%')
