@@ -7,7 +7,6 @@ def predict_rf(convNet_model, rf_classifier, test_loader):
     all_predictions = []
     true_labels = []
 
-    # Lặp qua từng batch trong test_loader để trích xuất đặc trưng và dự đoán
     # loop over each batch in test_loader to extract features and predict labels
     for inputs, targets in test_loader:
         with torch.no_grad():
