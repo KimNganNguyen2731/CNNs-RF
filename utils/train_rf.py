@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from tools.tools import get_fc_features
+from tools.tools import get_fc_features, loss_result
 from sklearn.ensemble import RandomForestClassifier
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
